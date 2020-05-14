@@ -1,0 +1,35 @@
+server { 
+    listen {{ item.listen | default('80') }};
+{% if item.server_name is defined %}
+    server_name {{ item.server_name }};
+{% endif %}
+
+{% if item.listen == '443' %}
+    ssl    on; 
+    ssl_certificate           /etc/nginx/cert.crt;
+    ssl_certificate_key       /etc/nginx/cert.key;
+    add_header Strict-Transport-Security max-age=500; 
+{% endif %}
+
+    location / { 
+        proxy_pass  http://{{ item.upstream_name }}; 
+        proxy_redirect off; 
+        proxy_set_header Host $host ; 
+        proxy_set_header X-Real-IP $remote_addr ; 
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for ; 
+{% if item.listen == '443' %}
+        proxy_set_header X-Forwarded-Proto https; 
+{% else %}
+        proxy_set_header X-Forwarded-Proto http; 
+{% endif %}
+    } 
+
+{% if item.server_name is defined %}
+    error_log /var/log/nginx/{{ item.server_name }}-error.log error;
+	access_log /var/log/nginx/{{ item.server_name }}-access.log;
+{% else %}
+    error_log /var/log/nginx/error.log error;
+	access_log /var/log/nginx/access.log;
+{% endif %}
+    rewrite_log on;
+}

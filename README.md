@@ -1,0 +1,48 @@
+# Vagrant provision with Ansible
+
+## Background
+
+This Vagrant profile uses ansible to configure a local VM instance.
+Then it uses Ansible to build and run docker containers for a web develop stack.
+
+    - `data`: MySQL data volume on a Busybox container (for persistence).
+    - `db`: MySQL database container.
+
+
+## Get started
+
+To use this repository to spin up a develop server, get following ready:
+
+    1. Virtualbox
+    2. vagrant
+    3. Ansible
+
+Once above packages are ready, goto to folder containing the `Vagrantfile`, simply type `vagrant up` then wait and see.
+
+
+##  Hosts file (/etc/hosts) update
+
+We need update the `/etc/hosts` file to access the VM from host machine. Add following to bottom of the `/etc/hosts` file.
+
+```
+# VM host IP and name
+192.168.56.201   test.web
+```
+
+## Debug in VS code with xdebug
+
+Add following configure in `.vscode/launch.json`:
+
+```json
+        {
+            "name": "PHP - Listen for XDebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9000,
+            "stopOnEntry": false,
+            "pathMappings": {
+                "/var/www/test.web": "${workspaceFolder}/www/test.web"
+            },
+            "log": true
+        }
+```

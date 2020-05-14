@@ -1,0 +1,35 @@
+---
+# build docker containers
+- name: Build Docker images from Docker files.
+  docker_image:
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    source: build
+    build:
+      path: "/var/docker/{{ item.directory }}"
+      pull: false
+    state: present
+  with_items:
+    - { name: data, tag: latest, directory: data }
+    - { name: db, tag: latest, directory: db }
+
+# Data container
+- name: Run a Data container.
+  docker_container:
+    image: data:latest
+    name: data
+    state: present
+
+# MySQL container
+- name: Run a MySQL container.
+  docker_container:
+    image: db:latest
+    name: db
+    state: started
+    volumes_from: data
+    ports: 3306:3306
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ mysql_root_password }}"
+      MYSQL_DATABASE: "{{ mysql_databases }}"
+      MYSQL_USER: "{{ mysql_user }}"
+      MYSQL_PASSWORD: "{{ mysql_password }}"

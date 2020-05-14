@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  vars:
+    - php_ver: '7.2'
+    - docker_group_members: ['ubuntu', 'vagrant']
+    - mysql_root_password: root
+    - mysql_databases: dev
+    - mysql_user: dev
+    - mysql_password: dev
+
+  pre_tasks:
+    - name: Update apt cache if needed.
+      apt: update_cache=yes cache_valid_time=3600
+
+  roles:
+    - bootstrap
+    - php
+    - python
+    - nginx
+    - docker
+
+  tasks:
+    - import_tasks: docker-containers.yml
