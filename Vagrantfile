@@ -10,7 +10,6 @@ Vagrant.configure(2) do |config|
 
     # - do not sync the default vagrant directory
     config.vm.synced_folder ".", "/vagrant", disabled: true
-    config.vm.synced_folder "docker/", "/var/docker/"
     # www contains web applications
     config.vm.synced_folder "www/", "/var/www/"
     # logs path
@@ -23,9 +22,6 @@ Vagrant.configure(2) do |config|
         v.cpus = 2
     end
 
-    # - inline shell provision to set local time
-    config.vm.provision :shell, :inline => "sudo ln -sf /usr/share/zoneinfo/Canada/Pacific /etc/localtime", run: "always"
-  
     # - enable provisioning with Ansible
     config.vm.provision :ansible do |ansible|
         ansible.config_file = "ansible/ansible.cfg"

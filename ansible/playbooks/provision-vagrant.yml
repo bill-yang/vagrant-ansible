@@ -2,6 +2,7 @@
 - hosts: all
   become: true
   vars:
+    - time_zone: 'Canada/Pacific'
     - php_ver: '7.2'
     - docker_group_members: ['ubuntu', 'vagrant']
     - mysql_root_password: root
