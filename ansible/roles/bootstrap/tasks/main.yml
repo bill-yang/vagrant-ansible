@@ -1,8 +1,5 @@
 ---
-- name: print out the hostname of target
-  command: hostname
-
-- name: upgrade system packages i.e. apt-get upgrade
+- name: upgrade system
   apt: upgrade=yes
 
 - name: install some commonly used packages

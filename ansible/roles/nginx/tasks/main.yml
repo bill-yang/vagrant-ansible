@@ -7,7 +7,6 @@
   apt:
     name: nginx
     state: present
-  notify: restart nginx
 
 - name: Generate OpenSSL private key
   openssl_privatekey: path=/etc/nginx/nginx.key
@@ -58,3 +57,9 @@
   when: item.state|default('present') != 'absent'
   with_items: "{{ nginx_vhost_list }}"
   notify: restart nginx
+
+- name: Start nginx
+  service:
+      name: nginx
+      state: started
+      enabled: yes

@@ -50,3 +50,9 @@
       xdebug.show_local_vars=1
       xdebug.idekey="VSCODE"
   notify: restart php
+
+# start php
+- name: start php
+  service: 
+    name: "php{{ php_ver }}-fpm"
+    state: started

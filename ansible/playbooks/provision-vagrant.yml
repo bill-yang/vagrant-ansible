@@ -6,7 +6,11 @@
     - user: "{{ ansible_user }}"
 
   pre_tasks:
-    - name: Update apt cache if needed.
+    - name: "Provision [{{ ansible_distribution }}] with Ansible"
+      debug:
+        msg: Set up host [{{ inventory_hostname }}::{{ ansible_host }}] with user [{{ ansible_user }}]
+
+    - name: Update apt cache if needed
       apt: update_cache=yes cache_valid_time=3600
 
   roles:
@@ -34,8 +38,12 @@
   tasks:
     - import_tasks: docker-containers.yml
       vars:
+        - mysql_version: 8.0
         - mysql_root_password: root
         - mysql_databases: dev
         - mysql_user: dev
         - mysql_password: dev
+        - mysql_port: 3306
+        - phpmyadmin_port: 8081
+        - redis_port: 6379
       become_method: sudo

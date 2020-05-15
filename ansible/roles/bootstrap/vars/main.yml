@@ -13,4 +13,3 @@ apt_packages:
   - fail2ban
   - unattended-upgrades
   - cowsay
-  - mongodb
