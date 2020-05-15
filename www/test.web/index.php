@@ -36,8 +36,33 @@ class Application
         } else {
             echo "==> Error: Could not connect to the database $dbname at $dbhost";
         }
+
+        echo '<p/>';
+    }
+
+    public function redisCheck()
+    {
+        try {
+            //Connecting to Redis server on localhost
+            $redis = new Redis(); 
+            $redis->connect('127.0.0.1', 6379); 
+            echo "==> Connection to redis server successfully";
+            //set the data in redis string
+            $val =  "Redis test data";
+            $redis->set("test-key", $val); 
+            // Get the stored data and print it 
+            if ($val === $redis->get("test-key")) {
+                echo '<br/>';
+                echo "==> Set and get data works"; 
+            }
+        } catch (Exception $e) {
+            echo "==> Error: Failed to connect redis server." . $e->getMessage();
+        }
+
+        echo '<p/>';
     }
 }
 $app = new Application();
 $app->dbCheck();
+$app->redisCheck();
 $app->info();

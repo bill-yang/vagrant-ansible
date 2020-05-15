@@ -9,8 +9,14 @@
     state: present
   notify: restart nginx
 
-- name: create self-signed SSL cert
-  command: openssl req -nodes -x509 -newkey rsa:4096 -keyout /etc/nginx/cert.key -out /etc/nginx/cert.crt -days 356 -subj "/C=CA/ST=BC/L=Vancouver/O=AP/CN=vagrant-dev-server"
+- name: Generate OpenSSL private key
+  openssl_privatekey: path=/etc/nginx/nginx.key
+
+- name: Generate OpenSSL Certificate Signing Request
+  openssl_csr: path=/etc/nginx/csr.csr  privatekey_path=/etc/nginx/nginx.key common_name=test.web
+
+- name: Generate Self-signed certificate
+  openssl_certificate: path=/etc/nginx/nginx.crt privatekey_path=/etc/nginx/nginx.key csr_path=/etc/nginx/csr.csr provider=selfsigned
   notify: restart nginx
 
 # nginx default configuration.

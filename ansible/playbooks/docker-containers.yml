@@ -25,6 +25,18 @@
       MYSQL_PASSWORD: "{{ mysql_password }}"
     state: started
 
+# Redis container
+# docker run --name myredis -d redis redis-server --appendonly yes --volumes_from mydata
+- name: Create a redis container
+  docker_container:
+    image: redis
+    name: myredis
+    volumes_from: mydata
+    ports: 6379:6379
+    command: redis-server --appendonly yes
+    state: started
+    recreate: yes
+
 # phpMyAdmin
 # docker run --name myadmin -d --link mysql_db:db -p 8080:80 phpmyadmin/phpmyadmin
 - name: Create a phpMyAdmin container

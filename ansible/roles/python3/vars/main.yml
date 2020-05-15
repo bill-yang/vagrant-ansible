@@ -1,9 +1,7 @@
 ---
 
 python_apt_packages:
-  - python-apt
-  - python-pip
-  - python-mysqldb
+  - python3-apt
   - python3-pip
   - python3-mysqldb
   - python3-setuptools

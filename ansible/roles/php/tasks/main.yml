@@ -6,7 +6,7 @@
 - import_tasks: setup-ubuntu.yml
   when: ansible_distribution == 'Ubuntu'
 
-- name: Install PHP
+- name: Install PHP {{ php_ver }}
   apt:
     name: "{{ php_apt_packages }}"
     state: present
@@ -34,7 +34,7 @@
   notify: restart php
 
 # xdebug setting
-- name: insert/update xdebug in php7/xdebug.ini
+- name: Enable xdebug for php {{ php_ver }}
   blockinfile:
     dest: /etc/php/{{ php_ver }}/mods-available/xdebug.ini
     block: |

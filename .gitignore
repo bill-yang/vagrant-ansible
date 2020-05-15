@@ -9,3 +9,4 @@ node_modules/*
 *.lock
 __pycahe__/*
 *.pyc
+.github/*

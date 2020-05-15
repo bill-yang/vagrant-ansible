@@ -1,25 +1,41 @@
 ---
 - hosts: all
-  become: true
+  become: yes
+  become_method: sudo
   vars:
-    - time_zone: 'Canada/Pacific'
-    - php_ver: '7.2'
-    - docker_group_members: ['ubuntu', 'vagrant']
-    - mysql_root_password: root
-    - mysql_databases: dev
-    - mysql_user: dev
-    - mysql_password: dev
+    - user: "{{ ansible_user }}"
 
   pre_tasks:
     - name: Update apt cache if needed.
       apt: update_cache=yes cache_valid_time=3600
 
   roles:
-    - bootstrap
-    - php
-    - python
-    - nginx
-    - docker
+    - role: bootstrap
+      time_zone: 'Canada/Pacific'
+
+    - role: python3
+
+    - role: php
+      php_ver: '7.4'
+    - role: nginx
+      php_ver: '7.4'
+
+    - role: docker
+      docker_group_members: ["{{ user }}"]
+
+    # https://github.com/morgangraphics/ansible-role-nvm
+    # fixed /etc/bash => /bin/bash
+    - role: ansible-role-nvm
+      nodejs_version: "12.16.3"
+      nvm_commands:
+       - "nvm exec default npm install"
+      become_user: "{{ user }}"
 
   tasks:
     - import_tasks: docker-containers.yml
+      vars:
+        - mysql_root_password: root
+        - mysql_databases: dev
+        - mysql_user: dev
+        - mysql_password: dev
+      become_method: sudo
