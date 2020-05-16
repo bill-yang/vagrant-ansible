@@ -17,8 +17,18 @@ To use this repository to spin up a develop server, get following ready:
     2. vagrant
     3. Ansible
 
-Once above packages are ready, goto to folder containing the `Vagrantfile`, simply type `vagrant up` then wait and see.
+## Update vagrant plugin (optional)
+The `VirtualBox Guest Addition` need to be updated with:
+```bash
+vagrant plugin install vagrant-vbguest
+```
 
+You want to check host and guest version by:
+```bash
+vagrant vbguest -- status
+```
+
+Once above packages are ready, goto to folder containing the `Vagrantfile`, simply type `vagrant up` then wait and see.
 
 ##  Hosts file (/etc/hosts) update
 
@@ -30,7 +40,6 @@ We need update the `/etc/hosts` file to access the VM from host machine. Add fol
 ```
 
 ## Debug in VS code with xdebug
-
 Add following configure in `.vscode/launch.json`:
 
 ```json

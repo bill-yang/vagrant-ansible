@@ -1,0 +1,49 @@
+---
+# build docker containers
+
+# Data container
+- name: Create a data container
+  docker_container:
+    image: busybox
+    name: "{{ data.name }}"
+    volumes:
+      - /var/data
+    state: present
+
+# MySQL container
+# docker run --name mysql_db -e MYSQL_ROOT_PASSWORD=dev -d mysql:5.7
+- name: Create a MySQL container.
+  docker_container:
+    image: "mysql:{{ db.version }}"
+    name: "{{ db.name }}"
+    volumes_from: "{{ data.name }}"
+    ports: "{{ db.port }}:3306"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ db.root_password }}"
+      MYSQL_DATABASE: "{{ db.database }}"
+      MYSQL_USER: "{{ db.user }}"
+      MYSQL_PASSWORD: "{{ db.password }}"
+    state: started
+
+# Redis container
+# docker run --name redis -d redis redis-server --appendonly yes --volumes_from data
+- name: Create a redis container
+  docker_container:
+    image: redis
+    name: "{{ redis.name }}"
+    volumes_from: "{{ data.name }}"
+    ports: "{{ redis.port }}:6379"
+    command: redis-server --appendonly yes
+    state: started
+    recreate: yes
+
+# phpMyAdmin
+# docker run --name myadmin -d --link mysql:db -p 8080:80 phpmyadmin/phpmyadmin
+- name: Create a phpMyAdmin container
+  docker_container:
+    image: phpmyadmin/phpmyadmin
+    name: "{{ dbadmin.name }}"
+    links:
+      - "{{ db.name }}:db"
+    ports: "{{ dbadmin.port }}:80"
+    state: started
