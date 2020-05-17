@@ -21,8 +21,18 @@
 
     - role: php
       php_ver: '7.4'
+
+    # install and set up nginx along with sites
     - role: nginx
-      php_ver: '7.4'
+      # nginx_vhost_list:[]
+      nginx_vhost_list:
+        #e.g. info.web.vm => /var/www/info
+        - domain: "web.vm"
+          conf: "sites.conf"
+          template: "vhost.j2"
+          php_ver: '7.4'
+          listen: 80
+          state: present
 
     - role: docker
       docker_group_members: ["{{ user }}"]

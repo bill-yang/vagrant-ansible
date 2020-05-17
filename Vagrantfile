@@ -25,7 +25,7 @@ Vagrant.configure(2) do |config|
     # - hostname in vm
     # vagrant will generate an inventory file with: `develop ansible_ssh_host=127.0.0.1 ansible_ssh_port=2222`
     config.vm.define "develop" do | develop |
-        develop.vm.hostname = "dev.vm"
+        develop.vm.hostname = "develop-vm"
     end
     # - always execute the Ansible provisioner when vagrant machine is up
     config.vm.provision :ansible, run: "always" do |ansible|

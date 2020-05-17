@@ -34,15 +34,15 @@
   notify: restart nginx
 
 # nginx virtual hosts configuration.
-- name: Ensure nginx_vhost_folder exists.
+- name: Ensure nginx_vhost_conf_folder exists.
   file:
-    path: "{{ nginx_vhost_folder }}"
+    path: "{{ nginx_vhost_conf_folder }}"
     state: directory
   notify: restart nginx
 
 - name: Remove host config files.
   file:
-    path: "{{ nginx_vhost_folder }}/{{ item.filename|default(item.server_name.split(' ')[0] ~ '.conf') }}"
+    path: "{{ nginx_vhost_conf_folder }}/{{ item.conf | default(item.domain ~ '.conf') }}"
     state: absent
   when: item.state|default('present') == 'absent'
   with_items: "{{ nginx_vhost_list }}"
@@ -50,8 +50,8 @@
 
 - name: Add host config files.
   template:
-    src: "{{ item.template|default(nginx_vhost_template) }}"
-    dest: "{{ nginx_vhost_folder }}/{{ item.filename|default(item.server_name.split(' ')[0] ~ '.conf') }}"
+    src: "{{ item.template }}"
+    dest: "{{ nginx_vhost_conf_folder }}/{{ item.conf | default(item.domain ~ '.conf') }}"
     force: yes
     mode: 0644
   when: item.state|default('present') != 'absent'

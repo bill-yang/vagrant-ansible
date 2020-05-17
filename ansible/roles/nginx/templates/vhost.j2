@@ -1,12 +1,13 @@
 server {
     listen {{ item.listen | default('80') }};
 
-{% if item.server_name is defined %}
-    server_name {{ item.server_name }};
+{% if item.domain is defined %}
+    server_name ~^(www\.)?(?<subdomain>.+?).{{ item.domain }}$;
+{% else %}
+    server_name ~^(www\.)?(?<subdomain>.+?)$;
 {% endif %}
-{% if item.root is defined %}
-    root {{ item.root }};
-{% endif %}
+
+    root /var/www/$subdomain;
 
     index {{ item.index | default('index.html index.htm index.php') }};
     charset utf-8;
@@ -21,24 +22,19 @@ server {
         rewrite ^/(.+)/$ /$1 permanent;
     }
 
-{% if item.error_page is defined %}
-    error_page {{ item.error_page }};
-{% endif %}
-    # logs
-{% if item.server_name is defined %}
-    error_log /var/log/nginx/{{ item.server_name }}-error.log error;
-    access_log /var/log/nginx/{{ item.server_name }}-access.log;
-{% else %}
-    error_log /var/log/nginx/error.log error;
-    access_log /var/log/nginx/access.log;
-{% endif %}
+    # logs (variable $subdomain is not supported for error_log, works for access_log though)
+    error_log /var/log/nginx/{{ item.domain }}-error.log error;
+    access_log /var/log/nginx/{{ item.domain }}-access.log;
+    error_page {{ item.error_page | default('404 /index.php') }};
+
     rewrite_log on;
+
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 
     # PHP FPM configuration.
     location ~* \.php$ {
-        fastcgi_pass unix:/run/php/php{{ php_ver }}-fpm.sock;
+        fastcgi_pass unix:/run/php/php{{ item.php_ver }}-fpm.sock;
         fastcgi_index index.php;
         fastcgi_split_path_info ^(.+\.php)(.*)$;
         include /etc/nginx/fastcgi_params;

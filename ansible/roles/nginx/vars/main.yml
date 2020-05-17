@@ -5,11 +5,4 @@ nginx_default_vhost_conf: /etc/nginx/sites-enabled/default
 nginx_default_vhost_folder: /var/www/html
 
 # vhost
-nginx_vhost_folder: /etc/nginx/sites-enabled
-nginx_vhost_template: "vhost.j2"
-
-nginx_vhost_list:
-  - listen: "80"
-    server_name: "test.web"
-    root: "/var/www/test.web"
-    template: "vhost.j2"
+nginx_vhost_conf_folder: /etc/nginx/sites-enabled

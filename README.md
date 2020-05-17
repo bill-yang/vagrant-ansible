@@ -36,7 +36,7 @@ We need update the `/etc/hosts` file to access the VM from host machine. Add fol
 
 ```
 # VM host IP and name
-192.168.56.201   test.web
+192.168.56.201   info.web.vm
 ```
 
 ## Debug in VS code with xdebug
@@ -50,7 +50,7 @@ Add following configure in `.vscode/launch.json`:
             "port": 9000,
             "stopOnEntry": false,
             "pathMappings": {
-                "/var/www/test.web": "${workspaceFolder}/www/test.web"
+                "/var/www": "${workspaceFolder}/www"
             },
             "log": true
         }
