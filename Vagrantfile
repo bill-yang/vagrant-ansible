@@ -9,8 +9,10 @@ Vagrant.configure(2) do |config|
 
     # - do not sync the default vagrant directory
     config.vm.synced_folder ".", "/vagrant", disabled: true
-    # www contains web applications
+    # www contains web site (PHP)
     config.vm.synced_folder "www/", "/var/www/"
+    # webapp contains web applications e.g. node.js/python
+    config.vm.synced_folder "webapp/", "/var/webapp/"
     # logs path
     config.vm.synced_folder "log/", "/var/log/", owner: "www-data", group: "www-data", mount_options: ["dmode=775", "fmode=666"] 
 

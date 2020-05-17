@@ -2,12 +2,13 @@
 # build docker containers
 
 # Data container
-- name: Create a data container
+- name: Create a volume docker
   docker_container:
     image: busybox
-    name: "{{ data.name }}"
+    name: "{{ docker_volume }}"
     volumes:
-      - /var/data
+      - /var/lib/mysql
+      - /data
     state: present
 
 # MySQL container
@@ -16,7 +17,7 @@
   docker_container:
     image: "mysql:{{ db.version }}"
     name: "{{ db.name }}"
-    volumes_from: "{{ data.name }}"
+    volumes_from: "{{ docker_volume }}"
     ports: "{{ db.port }}:3306"
     env:
       MYSQL_ROOT_PASSWORD: "{{ db.root_password }}"
@@ -31,7 +32,7 @@
   docker_container:
     image: redis
     name: "{{ redis.name }}"
-    volumes_from: "{{ data.name }}"
+    volumes_from: "{{ docker_volume }}"
     ports: "{{ redis.port }}:6379"
     command: redis-server --appendonly yes
     state: started

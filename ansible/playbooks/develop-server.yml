@@ -46,9 +46,9 @@
       become_user: "{{ user }}"
 
   tasks:
-    - import_tasks: develop-dockers.yml
+    - import_tasks: docker-server.yml
       vars:
-        - data: {name: data}
+        - docker_volume: my_volume
         - db: {name: mysql, version: 8.0, root_password: root, database: dev, user: dev, password: dev, port: 3306}
         - dbadmin: {name: phpmyadmin, port: 8081}
         - redis: {name: redis, port: 6379}
