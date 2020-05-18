@@ -19,6 +19,8 @@ RUN pip install --upgrade pip && \
     pip install flask flask-sqlalchemy pymysql docker cryptography
 
 # copy files
+COPY __init__.py /opt/webapp/__init__.py
+COPY config.py /opt/webapp/config.py
 COPY index.py /opt/webapp/index.py
 COPY templates /opt/webapp/templates
 

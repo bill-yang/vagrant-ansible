@@ -8,9 +8,10 @@ from sqlalchemy import text
 
 app = Flask(__name__)
 
+app.config.from_object('config.Config')
+
 # Configure MySQL connection.
-db_uri = 'mysql+pymysql://dev:dev@172.17.0.2/dev'
-app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://dev:dev@172.17.0.2/dev'
 db = SQLAlchemy(app)
 
 @app.route("/")
@@ -30,7 +31,7 @@ def test():
     if mysql_result:
         result = Markup('<span style="color: green;">PASS</span>')
     else:
-        result = Markup('<span style="color: red;">FAIL</span> [%s]', err)
+        result = Markup('<span style="color: red;">FAIL</span> [{}]'.format(err))
 
     # Return the page with the result.
     return render_template('index.html', result=result)

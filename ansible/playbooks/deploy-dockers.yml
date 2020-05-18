@@ -18,5 +18,5 @@
     image: flask-info:latest
     name: flask-info
     state: started
-    command: python /opt/webapp/index.py
+    command: python3 /opt/webapp/index.py
     ports: "5000:5000"
