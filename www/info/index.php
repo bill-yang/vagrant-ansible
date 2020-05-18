@@ -2,7 +2,8 @@
 class Application
 {
     // MySQL connection
-    const DBHOST = '192.168.56.201'; // '127.0.0.1'
+    //const DBHOST = '192.168.56.201'; // <- vagrant guest OS IP
+    const DBHOST = '172.17.0.2'; // '127.0.0.1'; // <- mysql docker server IP in vagrant
     const DBNAME = 'dev';
     const DBUSER = 'dev';
     const DBPASS = 'dev';

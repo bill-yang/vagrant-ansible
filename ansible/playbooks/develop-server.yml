@@ -54,3 +54,5 @@
         - redis: {name: redis, port: 6379}
       become: yes
       become_method: sudo
+
+    - import_tasks: deploy-dockers.yml

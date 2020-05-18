@@ -1,0 +1,22 @@
+---
+# - build docker containers
+- name: Build Docker images from Dockerfile.
+  docker_image:
+    name: "{{ item.name }}"
+    tag: "{{ item.tag }}"
+    source: build
+    build:
+      path: "{{ item.directory }}"
+      pull: false
+    state: present
+  with_items:
+    - { name: flask-info, tag: latest, directory: /var/webapp/flask-info }
+
+# - deploy docker containers
+- name: Run a Flask container.
+  docker_container:
+    image: flask-info:latest
+    name: flask-info
+    state: started
+    command: python /opt/webapp/index.py
+    ports: "5000:5000"

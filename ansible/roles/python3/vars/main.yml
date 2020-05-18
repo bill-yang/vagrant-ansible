@@ -16,3 +16,4 @@ pip_install_list:
   - pymysql
   - docker
   - virtualenv
+  - cryptography
