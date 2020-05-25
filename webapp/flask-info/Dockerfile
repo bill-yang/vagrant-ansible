@@ -28,4 +28,4 @@ EXPOSE 5000
 
 # every time the docker run, `python /opt/webapp/index.py` is being called
 #ENTRYPOINT [ "python" ] 
-#CMD [ "/opt/webapp/index.py" ]
+CMD [ "python3", "/opt/webapp/index.py" ]

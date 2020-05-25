@@ -56,3 +56,12 @@
       become_method: sudo
 
     - import_tasks: deploy-dockers.yml
+      vars:
+        deploy_list:
+          - image_name: "flask-info"
+            tag: "latest"
+            directory: "/var/webapp/flask-info"
+            container_name: "flask-info"
+            link_db: "mysql"
+            ports: "5000:5000"
+            state: "started"

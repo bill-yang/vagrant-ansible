@@ -3,7 +3,8 @@ class Config(object):
 
     # DB URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://dev:dev@172.17.0.2/dev'
+#    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://dev:dev@172.17.0.2/dev'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://dev:dev@db/dev'
 
 class DevConfig(Config):
     """Development configuration."""
